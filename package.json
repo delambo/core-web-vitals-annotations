@@ -1,7 +1,7 @@
 {
-  "name": "core-web-vitals-extension",
-  "version": "0.0.0",
-  "description": "Core Web Vitals analysis",
+  "name": "core-web-vitals-annotations",
+  "version": "0.0.1",
+  "description": "Annotate a website with the Core Web Vitals",
   "scripts": {
     "dev": "kyt dev",
     "build": "kyt build",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nytm/*************.git"
+    "url": "git+https://github.com/delambo/core-web-vitals-annotations.git"
   },
-  "author": "NYT",
-  "license": "UNLICENSED",
+  "author": "Matt DeLambo",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nytm/*************/issues"
+    "url": "https://github.com/delambo/core-web-vitals-annotations/issues"
   },
-  "homepage": "https://github.com/nytm/*************#readme",
+  "homepage": "https://github.com/delambo/core-web-vitals-annotations#readme",
   "dependencies": {
     "@babel/core": "7.12.10",
     "@babel/plugin-proposal-class-properties": "7.3.0",
