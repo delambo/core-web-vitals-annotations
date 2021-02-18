@@ -1,0 +1,12 @@
+{
+  "presets": [
+    ["babel-preset-kyt-react", {
+      "includeRuntime": true
+    }]
+  ],
+  "plugins": [
+    "@babel/plugin-proposal-class-properties",
+    "kyt-runtime/babel",
+    ["pretty-lights/babel", { "sourceMap": true, "autoLabel": true }]
+  ]
+}

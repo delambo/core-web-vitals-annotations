@@ -1,0 +1,36 @@
+
+  .cls-border {
+    position: relative;
+  }
+  
+  .cls-border:before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    border: 15px solid rgba(0, 0, 0, 0);
+    z-index: 10000;
+  }
+  .cls-border.cls-yellow:before {
+    border-color: rgba(255, 255, 204, .7);
+  }
+
+  .cls-border.cls-orange:before {
+    border-color: rgba(252, 214, 112, .7);
+  }
+
+  .cls-border.cls-dark-orange:before {
+    border-color: rgba(248, 148, 6, .7);
+  }
+
+  .cls-border.cls-red:before {
+    border-color: rgba(210, 41, 21, 0.7);
+  }
+
+  .cls-border.cls-purple:before {
+    border-color: rgba(165, 55, 253, 0.5);
+    border-style: dashed;
+  }

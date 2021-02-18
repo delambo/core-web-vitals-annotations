@@ -1,0 +1,10 @@
+.caches
+.DS_Store
+.idea
+.prettierrc
+.project
+*.json.gzip
+*.log
+build
+node_modules
+npm-debug.log

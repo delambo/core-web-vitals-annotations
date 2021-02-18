@@ -1,0 +1,14 @@
+{
+  "eslint.autoFixOnSave": true,
+  "editor.formatOnSave": false,
+  "editor.tabSize": 2,
+  "search.exclude": {
+    "build": true,
+    "**/node_modules": true,
+    "**/*.woff*": true,
+    "package-lock.json": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}
