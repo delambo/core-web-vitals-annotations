@@ -2,8 +2,6 @@
 const layoutElementMemo = {};
 let lcpData;
 
-console.log('CWV Extension: Loading...');
-
 const appendCSS = (css) => {
   const style = document.createElement('style');
   style.innerText = css;
@@ -12,9 +10,12 @@ const appendCSS = (css) => {
 };
 
 const borderContentCSS = (namespace, content, zIndex) => `
-    .cls-border-${namespace}:after { content: '${
-  content || ''
-}'; color: white; text-shadow: 1px 1px 3px black; top: 0; left: 2px; position: absolute; z-index: ${zIndex}; font-size: 14px !important; font-family: nyt-franklin, helvetica, arial, sans-serif !important; font-kerning: normal !important; font-style: normal !important; font-weight: bold !important; text-transform: uppercase !important; }
+  .cls-border-${namespace}:after {
+    content: '${content || ''}';
+    z-index: ${zIndex};
+    color: white; text-shadow: 1px 1px 3px black;
+    position: absolute; top: 0; left: 2px;
+    font-size: 14px !important; font-family: nyt-franklin, helvetica, arial, sans-serif !important; font-kerning: normal !important; font-style: normal !important; font-weight: bold !important; text-transform: uppercase !important; }
 `;
 
 const findBestNodeToAnnotate = (node) => {
@@ -49,7 +50,7 @@ const findBestNodeToAnnotate = (node) => {
 
 const annotateLCP = () => {
   if (!lcpData) return;
-  console.log('CWV Extension: LCP Data:', lcpData);
+  console.log('CWV Annotations: LCP:', lcpData);
   if (lcpData.entries.length) {
     const entry = lcpData.entries[lcpData.entries.length - 1];
     // Sometimes `element` does not exist, but `url` does and `url` is for img src
@@ -76,7 +77,7 @@ const annotateLCP = () => {
 const webVitalCallback = (data) => {
   const { name, value } = data;
   if (name === 'LCP') lcpData = data;
-  if (name === 'FID') console.log('CWV Extension: FID:', data);
+  if (name === 'FID') console.log('CWV Annotations: FID:', data);
   chrome.runtime.sendMessage({ CWV: { name, value } });
 };
 
@@ -84,7 +85,7 @@ let clsScrollEventFn;
 
 const addCLSAnnotations = () => {
   window.cumulativeLayoutShiftScore = 0;
-  let ns = 0;
+  let namespaceCount = 0;
   let borderContentZIndex = 1000000;
 
   const getColor = (val) => {
@@ -94,18 +95,19 @@ const addCLSAnnotations = () => {
     return 'cls-red';
   };
 
-  const setCLSState = () => {
+  const annotateCLS = () => {
+    console.log('CWV Annotations: Annotating CLS');
     const observer = new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) {
         if (!entry.hadRecentInput && entry.entryType === 'layout-shift') {
-          console.log(`CWV Extension: New observer entry for cls: ${entry.value}`);
+          console.log(`CWV Annotations: Layout Shift: ${entry.value}`, entry);
           const hasNestedShifts = entry.sources.length > 1;
-          entry.sources.forEach((source, i) => {
-            console.log('CWV Extension:', source);
+          entry.sources.forEach((source, index) => {
             let { node } = source;
+            // What should we do when node is null (element was removed)? Notify the user?
             if (node === null) return;
             node = findBestNodeToAnnotate(node);
-            const namespace = `${++ns}${i}`;
+            const namespace = `${++namespaceCount}${index}`;
             const metadata = {
               namespace,
               clazz: `cls-border-${namespace}`,
@@ -122,6 +124,7 @@ const addCLSAnnotations = () => {
           window.cumulativeLayoutShiftScore += entry.value;
         }
       }
+      // Annotate LCP after CLS so that we can layer it in on top.
       annotateLCP();
       observer.disconnect();
     });
@@ -132,8 +135,8 @@ const addCLSAnnotations = () => {
     });
   };
 
-  setCLSState();
-  clsScrollEventFn = _.debounce(setCLSState, 250);
+  annotateCLS();
+  clsScrollEventFn = _.debounce(annotateCLS, 250);
 
   window.addEventListener('scroll', clsScrollEventFn, { passive: true });
 };
@@ -150,6 +153,7 @@ const removeAnnotations = () => {
 
 chrome.runtime.onMessage.addListener((message) => {
   if (message.getCoreVitals) {
+    console.log('CWV Annotations: Loading...');
     webVitals.getCLS(webVitalCallback, { reportAllChanges: false });
     webVitals.getFID(webVitalCallback, { reportAllChanges: false });
     webVitals.getLCP(webVitalCallback, { reportAllChanges: false });
