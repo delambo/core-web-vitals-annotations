@@ -1,4 +1,4 @@
-<center> <h1>Chrome Extension: Core Web Vitals Annotations</h1> </center>
+<h1 align="center">Chrome Extension: Core Web Vitals Annotations</h1>
 
 <p align="center"><img src="src/public/images/logo-128x128.png/?raw=true"></p>
 
