@@ -1,4 +1,8 @@
+<p align="center"><img src="src/public/images/logo-128x128.png/?raw=true"></p>
+
 # Core Web Vitals Annotations Chrome Extension
+
+![Core Web Vitals Annotations example](readme-images/example-1280x800.png/?raw=true "Core Web Vitals Annotations example")
 
 ## Setup
 
