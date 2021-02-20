@@ -14,10 +14,26 @@ class Popup extends Component {
       LCP: null,
       FID: null,
     };
-    // When we open the popup, send a message to the
-    // contentScript to add annotations
+    this.loadContentScript();
+  }
+
+  // Load the content scripts on demand for the current tab after the popup is opened.
+  // Doing it ondemand eases up Chrome Extension permissions/makes it easier to publish.
+  // This is typically done via message passing to a background script, but doing it
+  // here seemed way simpler for now.
+  // eslint-disable-next-line class-methods-use-this
+  loadContentScript() {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      chrome.tabs.sendMessage(tabs[0].id, { getCoreVitals: true });
+      // pulled from node_modules by kyt.config into build directory
+      chrome.tabs.executeScript(tabs[0].id, { file: 'web-vitals.umd.js' });
+      // script in src/public
+      chrome.tabs.executeScript(tabs[0].id, { file: 'lodash.debounce-throttle.js' });
+      // pulled from src/conrtentScript.js by kyt.config into build directory
+      chrome.tabs.executeScript(tabs[0].id, { file: 'contentScript.js' });
+      // static file in src/public
+      chrome.tabs.insertCSS(tabs[0].id, { file: 'contentScript.css' }, () => {
+        chrome.tabs.sendMessage(tabs[0].id, { getCoreVitals: true });
+      });
     });
   }
 

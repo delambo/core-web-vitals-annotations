@@ -20,8 +20,8 @@ const borderContentCSS = (namespace, content, zIndex) => `
 
 const findBestNodeToAnnotate = (node) => {
   if (!node) return node;
-  // if it's a text node, return parent
-  if (node.nodeType === 3) node = node.parentNode;
+  // Return parent if we can't annotate the node type
+  if (node.nodeType === 3 || node.tagName === 'svg') node = node.parentNode;
   if (node.tagName === 'TBODY') return node.closest('table');
   // Problems with setting border inset on images via pseudo class.
   // Grabbing a parent div may be too high in the tree :/

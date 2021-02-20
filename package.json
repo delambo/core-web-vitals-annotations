@@ -1,5 +1,5 @@
 {
-  "name": "core-web-vitals-annotations",
+  "name": "Core Web Vitals Annotations",
   "version": "0.0.1",
   "description": "Annotate a website with the Core Web Vitals",
   "scripts": {

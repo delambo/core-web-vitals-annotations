@@ -19,7 +19,7 @@ module.exports = {
       };
       config.devtool = 'source-map';
       // config.entry.background = './src/background/index.js';
-      config.entry.contentScript = './src/contentScript/index.js';
+      // config.entry.contentScript = './src/contentScript/index.js';
       config.entry.popup = './src/popup/index.js';
       delete config.entry.main;
 
