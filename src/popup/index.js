@@ -4,7 +4,7 @@ import * as styles from './styled';
 
 class Popup extends Component {
   componentDidCatch(error, info) {
-    console.log('Caught an error :/', error, info);
+    console.log('Popup caught an error :/', error, info);
   }
 
   constructor() {
@@ -14,7 +14,18 @@ class Popup extends Component {
       LCP: null,
       FID: null,
     };
+    this.setupEventListener();
     this.loadContentScript();
+  }
+
+  setupEventListener() {
+    chrome.runtime.onMessage.addListener((request) => {
+      // Listen for core web vitals events from the contentScript
+      if (request && request && request.CWV) {
+        console.log('POPUP recieved CWV:', request.CWV);
+        this.setState({ [request.CWV.name]: request.CWV.value });
+      }
+    });
   }
 
   // Load the content scripts on demand for the current tab after the popup is opened.
@@ -26,25 +37,14 @@ class Popup extends Component {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       // pulled from node_modules by kyt.config into build directory
       chrome.tabs.executeScript(tabs[0].id, { file: 'web-vitals.umd.js' });
-      // script in src/public
+      // static file in src/public
       chrome.tabs.executeScript(tabs[0].id, { file: 'lodash.debounce-throttle.js' });
-      // pulled from src/conrtentScript.js by kyt.config into build directory
+      // static file in src/public
       chrome.tabs.executeScript(tabs[0].id, { file: 'contentScript.js' });
       // static file in src/public
       chrome.tabs.insertCSS(tabs[0].id, { file: 'contentScript.css' }, () => {
         chrome.tabs.sendMessage(tabs[0].id, { getCoreVitals: true });
       });
-    });
-  }
-
-  componentDidMount() {
-    const that = this;
-    chrome.runtime.onMessage.addListener((request) => {
-      // Listen for core web vitals events from the contentScript
-      if (request && request && request.CWV) {
-        console.log('POPUP recieved CWV:', request.CWV);
-        that.setState({ [request.CWV.name]: request.CWV.value });
-      }
     });
   }
 
