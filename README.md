@@ -4,7 +4,7 @@
 <p align="center"><img src="src/public/images/logo-128x128.png/?raw=true"></p>
 
 ## About
-This extension will overlay annotations onto your website to highlight page attributes that had an impact on the [Core Web Vitals](https://web.dev/vitals/) performance metrics, First Input Delay ([FID]()https://web.dev/fid/), Largest Contentful Paint ([LCP](https://web.dev/lcp/)) and Cumulative Layout Shift ([CLS](https://web.dev/cls/)). It also reports the Core Web Vitals metrics for a page, using [Google's recommended color-coded thresholds](https://web.dev/defining-core-web-vitals-thresholds/).
+This extension will overlay annotations onto your website to highlight page attributes that had an impact on the [Core Web Vitals](https://web.dev/vitals/) performance metrics, First Input Delay ([FID](https://web.dev/fid/)), Largest Contentful Paint ([LCP](https://web.dev/lcp/)) and Cumulative Layout Shift ([CLS](https://web.dev/cls/)). It also reports the Core Web Vitals metrics for a page, using [Google's recommended color-coded thresholds](https://web.dev/defining-core-web-vitals-thresholds/).
 
 ![Core Web Vitals Annotations example](readme-images/example-1280x800.png/?raw=true "Core Web Vitals Annotations example")
 
