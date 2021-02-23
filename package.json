@@ -1,10 +1,11 @@
 {
   "name": "Core Web Vitals Annotations",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Annotate a website with the Core Web Vitals",
   "scripts": {
     "dev": "kyt dev",
     "build": "kyt build",
+    "archive": "zip -r -X core_web_vitals_annotations.zip build/public",
     "test": ""
   },
   "repository": {
